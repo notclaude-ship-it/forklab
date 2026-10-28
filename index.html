@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101510">
+  <meta name="description" content="FORKLAB — un jeu de laboratoire expérimental où chaque hypothèse crée une nouvelle branche du réel.">
+  <title>FORKLAB — laboratoire de réalités</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#" aria-label="FORKLAB accueil"><span class="mark">F</span> FORKLAB <span class="wordmark-sub">/ LABORATOIRE DE RÉALITÉS</span></a>
+      <div class="top-actions"><span class="live-dot"></span><span>SIMULATION LOCALE</span><button id="reset-btn" class="quiet-button">Réinitialiser ↺</button></div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span>PROTOCOLE 001</span><span class="eyebrow-line"></span><span>ÉCOSYSTÈME FERMÉ</span></div>
+        <h1>La vie ne suit pas<br>vos <em>instructions.</em></h1>
+        <p class="hero-copy">Une simulation. Des règles inconnues. Un nombre limité d'expériences.<br>Observe, formule une hypothèse, puis bifurque si nécessaire.</p>
+      </section>
+      <section class="status-grid" aria-label="État du défi">
+        <div class="stat"><span class="stat-label">CYCLE</span><strong id="cycle-value">00 <small>/ 08</small></strong><span class="stat-foot">Temps simulé</span></div>
+        <div class="stat"><span class="stat-label">EXPÉRIENCES</span><strong id="experiments-value">12 <small>restantes</small></strong><span class="stat-foot">Chaque action compte</span></div>
+        <div class="stat"><span class="stat-label">VIE OBSERVÉE</span><strong id="life-value">0 <small>/ 4</small></strong><span class="stat-foot">Objectif du protocole</span></div>
+        <div class="stat"><span class="stat-label">BRANCHE ACTIVE</span><strong id="branch-value">α-01</strong><span class="stat-foot" id="branch-foot">Réalité initiale</span></div>
+      </section>
+      <section class="workspace">
+        <div class="panel lab-panel">
+          <div class="panel-heading"><div><span class="section-index">01 / TERRAIN</span><h2>Écosystème</h2></div><span class="mini-tag" id="environment-tag">EN OBSERVATION</span></div>
+          <div class="legend"><span><i class="legend-dot water"></i> Eau</span><span><i class="legend-dot nutrient"></i> Nutriments</span><span><i class="legend-dot life"></i> Vie</span></div>
+          <div id="world-grid" class="world-grid" role="group" aria-label="Sélectionner une parcelle"></div>
+          <div class="plot-detail" id="plot-detail" aria-live="polite">
+            <div><span class="detail-label">PARCELLE SÉLECTIONNÉE</span><strong id="selected-name">A1</strong></div>
+            <div class="meter-list">
+              <div class="meter"><span>Eau</span><div class="meter-track"><i id="water-meter"></i></div><b id="water-value">0</b></div>
+              <div class="meter"><span>Nutriments</span><div class="meter-track"><i id="nutrient-meter"></i></div><b id="nutrient-value">0</b></div>
+              <div class="meter"><span>Température</span><div class="meter-track"><i id="heat-meter"></i></div><b id="heat-value">0</b></div>
+            </div>
+          </div>
+          <div class="panel-bottom"><span class="hint-icon">i</span><span>Choisis une parcelle pour inspecter ses variables. Les règles biologiques restent inconnues.</span></div>
+        </div>
+        <div class="right-column">
+          <section class="panel controls-panel">
+            <div class="panel-heading"><div><span class="section-index">02 / INTERVENTION</span><h2>Modifier le réel</h2></div><span class="action-count" id="action-count">0 actions</span></div>
+            <p class="panel-description">Une intervention consomme une expérience. Les changements prennent effet immédiatement.</p>
+            <div class="action-grid">
+              <button class="action-card" data-action="water"><span class="action-symbol water-symbol">≈</span><span class="action-title">Ajouter de l'eau</span><span class="action-desc">Humidifier la parcelle</span><span class="action-cost">− 1 EXP.</span></button>
+              <button class="action-card" data-action="nutrient"><span class="action-symbol nutrient-symbol">✳</span><span class="action-title">Ajouter des nutriments</span><span class="action-desc">Enrichir le sol</span><span class="action-cost">− 1 EXP.</span></button>
+              <button class="action-card" data-action="heat"><span class="action-symbol heat-symbol">↑</span><span class="action-title">Chauffer</span><span class="action-desc">Augmenter la température</span><span class="action-cost">− 1 EXP.</span></button>
+              <button class="action-card" data-action="cool"><span class="action-symbol cool-symbol">↓</span><span class="action-title">Refroidir</span><span class="action-desc">Diminuer la température</span><span class="action-cost">− 1 EXP.</span></button>
+            </div>
+            <button id="advance-btn" class="primary-button">Lancer le cycle <span>→</span></button>
+            <p class="microcopy">Le temps avance sur toutes les parcelles. Les règles cachées ne changent pas.</p>
+          </section>
+          <section class="panel branch-panel">
+            <div class="panel-heading"><div><span class="section-index">03 / CONTREFACTUELS</span><h2>Branches temporelles</h2></div><span class="mini-tag">SNAPSHOTS</span></div>
+            <p class="panel-description">Sauvegarde un état, explore une piste, puis reviens sans perdre cette branche.</p>
+            <div class="branch-controls"><input id="branch-name" maxlength="22" placeholder="Nom de la branche…" aria-label="Nom de la branche"><button id="save-branch-btn" class="outline-button">+ Créer</button></div>
+            <div id="branch-list" class="branch-list"></div>
+          </section>
+        </div>
+      </section>
+      <section class="bottom-grid">
+        <section class="panel log-panel"><div class="panel-heading"><div><span class="section-index">04 / JOURNAL</span><h2>Observations</h2></div><button id="clear-log-btn" class="text-button">Effacer</button></div><ol id="event-log" class="event-log" aria-live="polite"></ol></section>
+        <section class="panel objective-panel"><span class="section-index">OBJECTIF DU PROTOCOLE</span><div class="objective-number">04<span> VIVANTS</span></div><p>Fais émerger au moins quatre organismes avant la fin du cycle 8.</p><div class="progress-track"><i id="objective-progress"></i></div><div class="objective-footer"><span id="objective-state">Protocole non résolu</span><span id="progress-percent">0%</span></div><div class="rule-note"><span class="note-icon">?</span><p><strong>La règle n'est pas donnée.</strong><br>Teste une variable à la fois. Les observations et les branches sont tes seuls outils.</p></div></section>
+      </section>
+      <footer><span>FORKLAB © 2026 — EXPÉRIENCE 001</span><span>HORS LIGNE PAR CONCEPTION <i>·</i> AUCUN COMPTE REQUIS</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

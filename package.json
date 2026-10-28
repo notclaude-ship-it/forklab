@@ -1,0 +1,16 @@
+{
+  "name": "forklab",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "A deterministic experimental puzzle game about hidden rules and branching timelines.",
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "test": "node --test",
+    "check": "node --check src/engine.js && node --check src/main.js && node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
